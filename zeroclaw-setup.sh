@@ -5,7 +5,6 @@ set -euo pipefail
 # ZeroClaw one-shot VPS setup
 # Run this as root on a fresh VPS.
 # Safe to re-run — idempotent.
-# Usage:  curl -fsSL https://<your-raw-url> | bash
 # ─────────────────────────────────────────────────────────
 
 NEW_USER="${1:-zeroclaw}"
@@ -14,8 +13,10 @@ ZEROCLAW_HOME="/home/$NEW_USER"
 echo "=== 1. Create non-root user $NEW_USER ==="
 if ! id "$NEW_USER" &>/dev/null; then
   adduser --disabled-password --gecos "" "$NEW_USER"
-  usermod -aG sudo "$NEW_USER"
   echo "$NEW_USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/99-"$NEW_USER"
+fi
+if ! id -nG "$NEW_USER" | grep -qw sudo; then
+  usermod -aG sudo "$NEW_USER"
 fi
 
 echo "=== 2. Install Docker ==="
@@ -60,7 +61,7 @@ echo "  Next steps (as $NEW_USER):"
 echo "    1. ssh $NEW_USER@<your-vps>   (no password)"
 echo "    2. zeroclaw onboard           (configure provider)"
 echo "    3. Enable sandbox in ~/.zeroclaw/config.toml:"
-echo "         [sandbox]"
+echo "         [security.sandbox]"
 echo "         backend = \"docker\""
 echo "    4. zeroclaw service install"
 echo "    5. zeroclaw service start"

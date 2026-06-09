@@ -15,6 +15,13 @@ What this script does:
 - Enables user systemd lingering. Zeroclaw's `service install` uses user-scoped systemd (`systemctl --user`), which requires a D-Bus session bus. Headless VPSes don't have one by default.
 - Installs Zeroclaw as the non-root user.
 
+### Clone this repo and navigate to the directory containing `zeroclaw-setup.sh`.
+
+```bash
+git clone https://github.com/avighub/zeroclaw-ai-assistant-setup.git
+cd zeroclaw-ai-assistant-setup
+```
+
 ### Option 1: Run the script locally on the VPS
 ```bash
 sudo bash zeroclaw-setup.sh
@@ -55,10 +62,9 @@ Suggested onboarding choices:
 **Then** enable the sandbox in `~/.zeroclaw/config.toml`:
 
 ```toml
-[sandbox]
+[security.sandbox]
 backend = "docker"
 ```
-**Restart zeroclaw service** `zeroclaw service start`
 
 You can verify sandbox is active by running `zeroclaw doctor` — look for "Sandbox: docker" in the output.
 
@@ -79,6 +85,11 @@ journalctl --user -u zeroclaw -f   # follow logs
 ```
 
 The service auto-restarts on crash and starts on boot.
+incase you need to restart after config changes:
+
+```bash
+systemctl --user restart zeroclaw
+```
 
 ## 5. Staying up to date with zeroclaw updates
 
