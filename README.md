@@ -49,7 +49,7 @@ Suggested onboarding choices:
 - Give a name to active workspace: `my-bot-space`
 - Isolated memory/secrets: Yes (set No only if you need sharing across workspaces)
 - cross-workspace-search: No
-- Model provider/model: your choice
+- Model provider/model: `google/gemini-3.1-flash-lite` or Use a good reasoning model, using smaller models for now may lead to poor performance and higher error rates. 
 - Memory backend: SQLite (default)
 
 ## 3. Docker sandbox
@@ -92,14 +92,16 @@ systemctl --user restart zeroclaw
 ```
 
 ## 5. Staying up to date with zeroclaw updates
-
+### Option 1:
+- Run `zeroclaw update` to check for updates and apply them.
+### Option 2:
 Re-run the installer to replace the binary, then restart the service. Your config and data in `~/.zeroclaw/` are untouched.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/zeroclaw-labs/zeroclaw/master/install.sh | bash -s -- --prebuilt --skip-onboard && systemctl --user restart zeroclaw
 ```
-
-To automate, add a weekly cron job:
+### Option 3:
+Automate, add a weekly cron job:
 
 ```bash
 # Runs every Sunday at 03:00 UTC
